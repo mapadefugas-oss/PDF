@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.venv/
+_context/*.pdf
+_context/*.png
+_context/test-generate.mjs
