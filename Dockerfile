@@ -13,7 +13,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libffi-dev \
     shared-mime-info \
     fonts-liberation \
+    fontconfig \
     && rm -rf /var/lib/apt/lists/*
+
+# Brand fonts (Fraunces, Inter, IBM Plex Mono) installed as real system fonts.
+# Without these, WeasyPrint silently falls back to whatever substitute font
+# happens to be available, and different fallback metrics between machines
+# (e.g. this container vs. a dev laptop) can shift text just enough to
+# change pagination - same HTML, different page count. Installing the exact
+# fonts makes rendering deterministic and matches the approved brand type.
+COPY fonts/ /usr/share/fonts/truetype/brand/
+RUN fc-cache -f
 
 WORKDIR /app
 
